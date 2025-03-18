@@ -23,6 +23,13 @@ export const menus: menuItem[] = [
 		icon: "gauge",
 	},
 	{
+		path: "/game",
+		menuName: "遊戲紀錄",
+		name: "game",
+		component: () => import("@/views/manage/game/game.vue"),
+		icon: "game-controller",
+	},
+	{
 		path: "/role",
 		menuName: "遊戲角色管理",
 		name: "role",

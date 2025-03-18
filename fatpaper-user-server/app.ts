@@ -43,6 +43,8 @@ async function bootstrap() {
         app.use("/static", express.static("public"));
 
         app.use("/auth", authRouter);
+
+        app.use("info", routerUser);
         
         //app.use("/room-router", roomRouter);
         // app.use(roleValidation);

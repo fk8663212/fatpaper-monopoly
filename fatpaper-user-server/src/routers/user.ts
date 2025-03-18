@@ -34,6 +34,20 @@ routerUser.get("/list", async (req, res, next) => {
 	}
 });
 
+routerUser.get("/infogoogle", async (req, res, next) => {
+	const token = req.body.token || req.header("authorization") || req.query.token;
+	if (token) {
+		try {} catch (err: any) {
+			const resMsg: ResInterface = {
+				status: 401,
+				msg: "Token過期或失效，請重新登錄",
+			};
+			res.status(401).json(resMsg);
+		}
+			
+	}});
+
+
 routerUser.get("/info", async (req, res, next) => {
 	const token = req.body.token || req.header("authorization") || req.query.token;
 	if (token) {
@@ -71,57 +85,6 @@ routerUser.get("/info", async (req, res, next) => {
 	}
 });
 
-// routerUser.post("/create", async (req, res, next) => {
-// 	const { username, password, avatar, color } = req.body;
-// 	if (username && password) {
-// 		try {
-// 			const resMsg: ResInterface = {
-// 				status: 200,
-// 				msg: "创建用户成功",
-// 				data: await createUser(username, password, avatar, color),
-// 			};
-// 			res.status(resMsg.status).json(resMsg);
-// 		} catch (e) {
-// 			const resMsg: ResInterface = {
-// 				status: 500,
-// 				msg: "数据库请求错误",
-// 			};
-// 			res.status(resMsg.status).json(resMsg);
-// 		}
-// 	} else {
-// 		const resMsg: ResInterface = {
-// 			status: 500,
-// 			msg: "参数错误",
-// 		};
-// 		res.status(resMsg.status).json(resMsg);
-// 	}
-// });
-
-// routerUser.post("/update", async (req, res, next) => {
-// 	const { id, username, avatar, color } = req.body;
-// 	if (id && username && avatar && color) {
-// 		try {
-// 			const resMsg: ResInterface = {
-// 				status: 200,
-// 				msg: "更新用户信息成功",
-// 				data: await updateUser(id, username, avatar, color),
-// 			};
-// 			res.status(resMsg.status).json(resMsg);
-// 		} catch (e) {
-// 			const resMsg: ResInterface = {
-// 				status: 500,
-// 				msg: "数据库请求错误",
-// 			};
-// 			res.status(resMsg.status).json(resMsg);
-// 		}
-// 	} else {
-// 		const resMsg: ResInterface = {
-// 			status: 500,
-// 			msg: "参数错误",
-// 		};
-// 		res.status(resMsg.status).json(resMsg);
-// 	}
-// });
 
 routerUser.get("/public-key", async (req, res, next) => {
 	const resMsg: ResInterface = {

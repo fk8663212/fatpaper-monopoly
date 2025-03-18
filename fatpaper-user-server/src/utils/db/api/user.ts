@@ -117,12 +117,6 @@ export const createUserFromGoogleProfile = async (profile: any): Promise<User> =
         color: "",                // 如有預設顏色可設定
         online: false,
         isAdmin: false,
-    }
-
-
-);
-    
-    
-
+    }); 
     return await userRepo.save(newUser);
 };
