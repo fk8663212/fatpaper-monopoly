@@ -1,13 +1,49 @@
 <script setup lang="ts">
 import { apiLogin, apiRegister, getPublicKey } from "@/utils/api";
-import { ref, reactive, onBeforeMount, toRaw } from "vue";
+import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
 import FPMessage from "@/components/fp-message";
 import { getEncryption } from "@/utils";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import axios from "axios";
+import { useRouter } from "vue-router";
 
-onBeforeMount(() => {
+const router = useRouter();
+
+// 在组件挂载后获取公钥，并添加全局消息监听器
+onMounted(() => {
 	getPublicKey();
+	window.addEventListener("message", handleMessage);
 });
+
+onBeforeUnmount(() => {
+	window.removeEventListener("message", handleMessage);
+});
+
+// 消息监听函数：处理 popup 窗口传回的登录成功信息
+function handleMessage(event: MessageEvent) {
+	console.log("event", event);
+	// 可根据实际情况校验 event.origin
+	if (event.data && event.data.type === "login_success") {
+		const { token, user } = event.data;
+		localStorage.setItem("token", token);
+		localStorage.setItem("user", JSON.stringify(user));
+		//確認是否成功保存token
+		console.log("token:", localStorage.getItem("token"));
+		console.log("user:", localStorage.getItem("user"));
+		// 跳转到游戏房间页面
+		console.log("跳转到游戏房间页面");
+		//router.push("/room-router");
+		if (token) {
+			window.top && window.top.postMessage(token, "*");
+		}
+		// if (router && router.push) {
+      	// 	router.push("/");
+    	// } 
+		// else {
+      	// 	console.error("Router is undefined!");
+    	// }
+	}
+}
 
 const isLoading = ref(false);
 const title = "FatPaper的小窩";
@@ -49,7 +85,7 @@ function resetRegisterForm() {
 	registerForm.password = "";
 	registerForm.confirmPassword = "";
 	registerForm.avatar = "";
-	registerForm.avatar = "#000000";
+	registerForm.color = "#000000";
 }
 
 const handleRegister = async () => {
@@ -112,6 +148,7 @@ async function handleLogin() {
 	try {
 		const token = await apiLogin(loginForm.useraccount, loginForm.password);
 		if (token) {
+			// 这里如果是传统登录，可以通过 postMessage 通知父窗口
 			window.top && window.top.postMessage(token, "*");
 		}
 	} finally {
@@ -119,28 +156,22 @@ async function handleLogin() {
 	}
 }
 
+// Google 登录：打开 popup 窗口进行 Google 登录
 async function loginWithGoogle() {
-	const googleLoginWindow = window.open(
-		//`${import.meta.env.VITE_API_URL}/auth/google`,
-		"http://localhost:83/auth/google",
-		"googleLogin",
-		"width=500,height=600"
-	);
-	if (googleLoginWindow) {
-		const googleLoginInterval = setInterval(() => {
-			if (googleLoginWindow.closed) {
-				clearInterval(googleLoginInterval);
-				FPMessage({
-					type: "error",
-					message: "登录失败",
-				});
-			}
-		}, 1000);
-	}
+  const googleLoginWindow = window.open(
+    "http://localhost:83/auth/google",
+    "googleLogin",
+    "width=500,height=600"
+  );
+  if (!googleLoginWindow) {
+    FPMessage({
+      type: "error",
+      message: "无法打开 Google 登录窗口",
+    });
+  }
 }
 
 const loginMode = ref(true);
-
 </script>
 
 <template>

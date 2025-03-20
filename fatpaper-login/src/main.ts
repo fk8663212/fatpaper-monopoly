@@ -4,6 +4,8 @@ import "@/assets/ui.scss";
 import "@/assets/font/font.css";
 import "@/utils/axios";
 import App from "./App.vue";
+//import router from "../../monopoly-client/src/router";
+
 
 /* import the fontawesome core */
 import {library} from "@fortawesome/fontawesome-svg-core";
@@ -28,5 +30,5 @@ import {
 
 
 library.add(faShieldHalved, faSplotch, faFan, faBook, faMusic, faGuitar, faMugSaucer, faCircleCheck, faCircleExclamation, faCircleXmark, faCircleInfo, faSpinner);
-
+//createApp(App).use(router).mount("#app");
 createApp(App).component("font-awesome-icon", FontAwesomeIcon).mount("#app");

@@ -46,7 +46,7 @@ async function bootstrap() {
 
         app.use("info", routerUser);
         
-        //app.use("/room-router", roomRouter);
+        app.use("/room-router", roomRouter);
         // app.use(roleValidation);
 
         app.use(bodyParser.json());

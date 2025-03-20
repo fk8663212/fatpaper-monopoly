@@ -1,3 +1,4 @@
+/// <reference path="../types/express-session.d.ts" />
 import { Router } from "express";
 import { createUser, deleteUser, getUserById, getUserList, isAdmin, userLogin } from "../utils/db/api/user";
 import { setToken, verToken } from "../utils/token";
@@ -35,17 +36,20 @@ routerUser.get("/list", async (req, res, next) => {
 });
 
 routerUser.get("/infogoogle", async (req, res, next) => {
-	const token = req.body.token || req.header("authorization") || req.query.token;
-	if (token) {
-		try {} catch (err: any) {
-			const resMsg: ResInterface = {
-				status: 401,
-				msg: "Token過期或失效，請重新登錄",
-			};
-			res.status(401).json(resMsg);
-		}
-			
-	}});
+	if (req.session && req.session.user && req.session.token) {
+		const resContent: ResInterface = {
+		  status: 200,
+		  msg: "登录成功",
+		  data: {
+			user: req.session.user,
+			token: req.session.token,
+		  },
+		};
+		res.status(200).json(resContent);
+	  } else {
+		res.status(401).json({ status: 401, msg: "未登录" });
+	  }
+	});
 
 
 routerUser.get("/info", async (req, res, next) => {

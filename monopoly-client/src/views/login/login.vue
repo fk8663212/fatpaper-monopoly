@@ -67,7 +67,15 @@ async function getUserInfoToRoomList() {
 					const userInfoStore = useUserInfo();
 					userInfoStore.$patch({ userId, useraccount, username, avatar, color });
 					await setTimeOutAsync(1500);
-					if (loginCodeRenderer) await loginCodeRenderer.showImage(`${__PROTOCOL__}://${avatar}`);
+					//判斷是否是本地圖片
+					if (avatar.indexOf("http") == -1) {
+						await loginCodeRenderer.showImage(`${__PROTOCOL__}://${avatar}`);
+					}
+					else {
+						await loginCodeRenderer.showImage(`${avatar}`);
+					}
+					//if (loginCodeRenderer) await loginCodeRenderer.showImage(`${__PROTOCOL__}://${avatar}`);
+		
 					await setTimeOutAsync(2000, toRoomList);
 					return;
 				} catch (e: any) {
