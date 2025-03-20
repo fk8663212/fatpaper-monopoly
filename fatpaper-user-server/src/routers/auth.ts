@@ -24,11 +24,9 @@ routerAuth.get("/google/callback",
                         msg: "登录成功",
                         data: token,
                     };
+        //res.redirect(`/user/infogoogle`);
+        res.status(200).json(resContent);
         
-        res.redirect(`/info`);
-        //res.status(200).json(resContent);
-        
-        // 你可以选择通过重定向返回 token，例如附加在 URL 上
     }
 );
 

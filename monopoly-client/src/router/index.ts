@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
 import { useLoading, useRoomInfo, useUserInfo } from "@/store";
 import { destoryMonopolyClient } from "@/classes/monopoly-client/MonopolyClient";
+import { tokenToString } from "typescript";
 
 function componentLoadedInterceptor(promise: Promise<any>) {
 	return () => {
@@ -30,6 +31,8 @@ const routes = [
 const router = createRouter({ history: import.meta.env.PROD ? createWebHistory() : createWebHashHistory(), routes });
 
 router.beforeEach((to, form) => {
+	console.log("token:",localStorage.getItem("token"));
+	console.log("user:",localStorage.getItem("user"));
 	switch (to.name) {
 		case "room-router":
 			destoryMonopolyClient();
