@@ -1,4 +1,5 @@
-export const FATPAPER_DOMAIN = "localhost"; //域名: 登录跳转的时候会用到
+//export const FATPAPER_DOMAIN = "localhost"; //域名: 登录跳转的时候会用到
+export const FATPAPER_DOMAIN = "192.168.0.105"; //域名: 登录跳转的时候会用到
 export const PROTOCOL: "http" | "https" = "http"; //协议: http https
 export const USE_PORT = true; //默认启用端口模式
 

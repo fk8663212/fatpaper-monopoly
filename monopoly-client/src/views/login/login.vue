@@ -70,9 +70,11 @@ async function getUserInfoToRoomList() {
 					//判斷是否是本地圖片
 					if (avatar.indexOf("http") == -1) {
 						await loginCodeRenderer.showImage(`${__PROTOCOL__}://${avatar}`);
+						console.log('local');
 					}
 					else {
 						await loginCodeRenderer.showImage(`${avatar}`);
+						console.log('online');
 					}
 					//if (loginCodeRenderer) await loginCodeRenderer.showImage(`${__PROTOCOL__}://${avatar}`);
 		
@@ -86,7 +88,7 @@ async function getUserInfoToRoomList() {
 			}
 			let userInfo = localStorage.getItem("user") || "";
 			if (userInfo) {
-				//游客登录
+				//遊客登入
 				const { userId, useraccount = "", username, avatar = "", color } = JSON.parse(userInfo);
 				const userInfoStore = useUserInfo();
 				userInfoStore.$patch({ userId, useraccount, username, avatar, color });
